@@ -73,13 +73,52 @@ class PDF:
         j=0
         for a in range(0, points):
             p = rd.uniform(0,1)
-            if p <= prob:
+            if p <= probability:
                 i+=1
             else:
                 j+=1
-            return [i,j]
+        return [i,j]
             
     def gaussian_twod(self, x, y, meanx, meany, sigmax, sigmay):
         gaus_x = np.exp(-np.power(x - meanx, 2.) / (2 * np.power(sigmax, 2.))) * (1/ (np.sqrt(2 * np.pi)*sigmax))
         gaus_y = np.exp(-np.power(y - meany, 2.) / (2 * np.power(sigmay, 2.))) * (1/ (np.sqrt(2 * np.pi)*sigmay))
         return gaus_x * gaus_y
+        
+        
+        
+class Util:
+    def __init__(self):
+        self.true = 0
+    
+    
+    def mean_function(self,points):
+        den = len(points)
+        sum_p = [a/den for a in points]
+        return np.sum(sum_p)
+
+    def var_function(self, points, mean):
+        den = len(points)
+        var_p = [(a - mean)**2 / den for a in points]
+        return np.sum(var_p)
+        
+    def skew(x, sigma, mean):
+        list_sum = []
+        for point in x:
+            list_sum.append((point - mean)**3)
+        return (np.sum(list_sum) / (len(x) * sigma**3))
+
+    def curtoise(x, sigma, mean):
+        list_sum = []
+        for point in x:
+            list_sum.append((point - mean)**4)
+        return ((np.sum(list_sum) / (len(x) * sigma**4)) - 3)
+        
+        
+    def covariance_func(self,x,y, x_mean, y_mean):
+        sum_list = []
+        for a in range(0, len(x)):
+            sum_list.append((x[a]-x_mean)*(y[a]-y_mean) / (len(x) - 1))
+        return np.sum(sum_list)
+
+    def correlation_func(self,cov, sigmax, sigmay):
+        return cov/(sigmax * sigmay)
