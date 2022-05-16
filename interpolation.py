@@ -5,6 +5,7 @@ from scipy.special import erf
 import random as rd
 import matplotlib.pyplot as plt
 import math
+from collections import Counter
 
 class LinearInterp:
     def __init__(self, x_data, y_data, interval):
@@ -122,3 +123,49 @@ class Util:
 
     def correlation_func(self,cov, sigmax, sigmay):
         return cov/(sigmax * sigmay)
+        
+        
+class Estimators:
+    def __init__(self):
+        self.init = 0
+    
+    def estimator_1(self, points):
+        soma = np.sum(points)
+        return soma/(len(points))
+            
+    
+    def estimator_2(self, points):
+        soma = 0
+        for a in range(0,10):
+            soma+=points[a]
+        return soma/10
+        
+    def estimator_3(self, points):
+        soma = np.sum(points)
+        return soma/(len(points)-1)
+    
+    def estimator_4(self, points):
+        return 1.8
+        
+    def estimator_5(self, points):
+        product = np.prod(points)
+        coeficient =1/ len(points)
+        return product**coeficient 
+    
+    def estimator_6(self, points):
+        data = Counter(points)
+        return data.most_common(1)[0][0]
+        
+    def estimator_7(self, points):
+        max_point = max(points)
+        min_point = min(points)
+        return (max_point + min_point)/2
+        
+    def estimator_8(self, points):
+        length = len(points)
+        interval = math.floor(length/2)
+        soma = 0
+        for a in range(0,interval):
+            soma += points[2*a]
+        return soma/interval          
+        
